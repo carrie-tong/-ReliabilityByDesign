@@ -1,7 +1,7 @@
 USE [ReliabilityAssessmentDb_DEV]
 GO
 
-/****** Object:  View [ReliabilityAssessment].[vRiskStatus]    Script Date: 15/04/2021 2:38:22 PM ******/
+/****** Object:  View [ReliabilityAssessment].[vRiskStatus]    Script Date: 15/04/2021 11:53:26 AM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -11,20 +11,12 @@ GO
 DROP VIEW [ReliabilityAssessment].[vRiskStatus]
 GO
 
-
 CREATE VIEW [ReliabilityAssessment].[vRiskStatus]
 AS
 SELECT ReliabilityAssessment.Project.ProjectId AS ProjectID, ReliabilityAssessment.Project.Name AS ProjectName, Definition.ProjectStatus.Name AS ProjectStatus, Definition.AssessmentRisk.Name AS RiskLevel
-FROM   ReliabilityAssessment.Project 
-		   INNER JOIN Definition.ProjectStatus 
-		   ON ReliabilityAssessment.Project.StatusId = Definition.ProjectStatus.ProjectStatusId 
-
-		   LEFT JOIN [Definition].[AssessmentRisk] 
-		   ON ([ReliabilityAssessment].[Project].[AssessmentScore] >=[Definition].[AssessmentRisk].[MinValue]
-				AND [ReliabilityAssessment].[Project].[AssessmentScore] <=[Definition].[AssessmentRisk].[MaxValue] )
-		   OR ([Definition].[AssessmentRisk].[MinValue] is null and [ReliabilityAssessment].[Project].[AssessmentScore] <= [Definition].[AssessmentRisk].[MaxValue])
-		   OR ([Definition].[AssessmentRisk].[MaxValue] is null and [ReliabilityAssessment].[Project].[AssessmentScore] >= [Definition].[AssessmentRisk].[MinValue])
-
+FROM   ReliabilityAssessment.Project INNER JOIN
+           Definition.ProjectStatus ON ReliabilityAssessment.Project.StatusId = Definition.ProjectStatus.ProjectStatusId CROSS JOIN
+           Definition.AssessmentRisk
 WHERE (Definition.ProjectStatus.Name = 'Approved') OR
            (Definition.ProjectStatus.Name = 'Conditionally Approved') OR
            (Definition.ProjectStatus.Name = 'Rejected') OR
@@ -33,7 +25,4 @@ WHERE (Definition.ProjectStatus.Name = 'Approved') OR
 
 GO
 
-----SELECT * 
-----FROM [ReliabilityAssessment].[Project]
-----LEFT JOIN [Definition].[AssessmentRisk]
-----ON ([ReliabilityAssessment].[Project].[AssessmentScore] >=[Definition].[AssessmentRisk].[MinValue])
+
