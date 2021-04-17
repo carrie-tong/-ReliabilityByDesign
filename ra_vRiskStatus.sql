@@ -7,9 +7,13 @@ GO
 CREATE VIEW [ReliabilityAssessment].[vRiskStatus]
 AS
 SELECT ReliabilityAssessment.Project.ProjectId AS ProjectID, ReliabilityAssessment.Project.Name AS ProjectName, 
-       Definition.ProjectStatus.Name AS ProjectStatus, COALESCE(Definition.AssessmentRisk.Name, 'NULL') AS RiskLevel
+       Definition.ProjectStatus.Name AS ProjectStatus, COALESCE(Definition.AssessmentRisk.Name, 'NULL') AS RiskLevel,
+       CAST(ReliabilityAssessment.Project.PlannedStartDate AS date) AS'PlannedStartDate',
+	   CAST(ReliabilityAssessment.Project.PlannedDeliveryDate AS date) AS'PlannedDeliveryDate',
+       CAST(ReliabilityAssessment.Project.CreateDateTimeOffset AS datetime) AS 'CreateDateTimeMT',
+	   CAST(ReliabilityAssessment.Project.LastUpdateDateTimeOffset AS datetime) AS 'LastUpdateDateTimeMT'
 
-FROM   ReliabilityAssessment.Project 
+FROM   ReliabilityAssessment.Project
 		   INNER JOIN Definition.ProjectStatus 
 		   ON ReliabilityAssessment.Project.StatusId = Definition.ProjectStatus.ProjectStatusId 
 
