@@ -28,7 +28,7 @@ WHERE (Definition.ProjectStatus.Name = 'Approved') OR
            (Definition.ProjectStatus.Name = 'Rejected') OR
            (Definition.ProjectStatus.Name = 'Stage 1 complete') OR
            (Definition.ProjectStatus.Name = 'Stage 2 complete')
-
 GO
+
 
 
