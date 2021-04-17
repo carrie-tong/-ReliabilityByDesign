@@ -1,20 +1,14 @@
 USE [ReliabilityAssessmentDb_DEV]
 GO
 
-/****** Object:  View [ReliabilityAssessment].[vRiskStatus]    Script Date: 15/04/2021 2:38:22 PM ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 DROP VIEW [ReliabilityAssessment].[vRiskStatus]
 GO
 
-
 CREATE VIEW [ReliabilityAssessment].[vRiskStatus]
 AS
-SELECT ReliabilityAssessment.Project.ProjectId AS ProjectID, ReliabilityAssessment.Project.Name AS ProjectName, Definition.ProjectStatus.Name AS ProjectStatus, Definition.AssessmentRisk.Name AS RiskLevel
+SELECT ReliabilityAssessment.Project.ProjectId AS ProjectID, ReliabilityAssessment.Project.Name AS ProjectName, 
+       Definition.ProjectStatus.Name AS ProjectStatus, COALESCE(Definition.AssessmentRisk.Name, 'NULL') AS RiskLevel
+
 FROM   ReliabilityAssessment.Project 
 		   INNER JOIN Definition.ProjectStatus 
 		   ON ReliabilityAssessment.Project.StatusId = Definition.ProjectStatus.ProjectStatusId 
@@ -24,7 +18,7 @@ FROM   ReliabilityAssessment.Project
 				AND [ReliabilityAssessment].[Project].[AssessmentScore] <=[Definition].[AssessmentRisk].[MaxValue] )
 		   OR ([Definition].[AssessmentRisk].[MinValue] is null and [ReliabilityAssessment].[Project].[AssessmentScore] <= [Definition].[AssessmentRisk].[MaxValue])
 		   OR ([Definition].[AssessmentRisk].[MaxValue] is null and [ReliabilityAssessment].[Project].[AssessmentScore] >= [Definition].[AssessmentRisk].[MinValue])
-
+		  
 WHERE (Definition.ProjectStatus.Name = 'Approved') OR
            (Definition.ProjectStatus.Name = 'Conditionally Approved') OR
            (Definition.ProjectStatus.Name = 'Rejected') OR
@@ -33,7 +27,4 @@ WHERE (Definition.ProjectStatus.Name = 'Approved') OR
 
 GO
 
-----SELECT * 
-----FROM [ReliabilityAssessment].[Project]
-----LEFT JOIN [Definition].[AssessmentRisk]
-----ON ([ReliabilityAssessment].[Project].[AssessmentScore] >=[Definition].[AssessmentRisk].[MinValue])
+
