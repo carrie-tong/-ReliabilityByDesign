@@ -1,8 +1,8 @@
 USE [ReliabilityAssessmentDb_DEV]
 GO
 
---DROP VIEW [ReliabilityAssessment].[vRiskStatus]
---GO
+DROP VIEW [ReliabilityAssessment].[vRiskStatus]
+GO
 
 CREATE VIEW [ReliabilityAssessment].[vRiskStatus]
 AS
@@ -14,8 +14,9 @@ SELECT ReliabilityAssessment.Project.ProjectId AS ProjectID, ReliabilityAssessme
 	   DATEDIFF(day, ReliabilityAssessment.Project.CreateDateTimeOffset,ReliabilityAssessment.Project.LastUpdateDateTimeOffset) as TimeToCompletAssessment
 
 FROM   ReliabilityAssessment.Project
-		   --INNER JOIN Definition.ProjectStatus 
-		   --ON ReliabilityAssessment.Project.StatusId = Definition.ProjectStatus.ProjectStatusId 
+
+		   INNER JOIN ReliabilityAssessment.vActiveProjectStatus
+		   ON ReliabilityAssessment.Project.StatusId = ReliabilityAssessment.vActiveProjectStatus.ProjectStatusId 
 
 		   LEFT JOIN [Definition].[AssessmentRisk] 
 		   ON ([ReliabilityAssessment].[Project].[AssessmentScore] >=[Definition].[AssessmentRisk].[MinValue]
@@ -23,8 +24,6 @@ FROM   ReliabilityAssessment.Project
 		   OR ([Definition].[AssessmentRisk].[MinValue] is null and [ReliabilityAssessment].[Project].[AssessmentScore] <= [Definition].[AssessmentRisk].[MaxValue])
 		   OR ([Definition].[AssessmentRisk].[MaxValue] is null and [ReliabilityAssessment].[Project].[AssessmentScore] >= [Definition].[AssessmentRisk].[MinValue])
 
-		   INNER JOIN ReliabilityAssessment.vActiveProjectStatus
-		   ON ReliabilityAssessment.Project.StatusId = ReliabilityAssessment.vActiveProjectStatus.ProjectStatusId 
 GO
 
 
