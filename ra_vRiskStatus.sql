@@ -1,28 +1,31 @@
-USE [ReliabilityAssessmentDb_DEV]
+USE ReliabilityAssessmentDb_DEV
 GO
 
-DROP VIEW [ReliabilityAssessment].[vRiskStatus]
+DROP VIEW ReliabilityAssessment.vRiskStatus
 GO
 
-CREATE VIEW [ReliabilityAssessment].[vRiskStatus]
+CREATE VIEW ReliabilityAssessment.vRiskStatus
 AS
-SELECT ReliabilityAssessment.Project.ProjectId AS ProjectID, ReliabilityAssessment.Project.Name AS ProjectName, 
-       ReliabilityAssessment.vActiveProjectStatus.Name AS ProjectStatus, COALESCE(Definition.AssessmentRisk.Name, 'NoRisk') AS RiskLevel,
+SELECT p.ProjectId AS ProjectID, p.Name AS ProjectName, 
+       vp.Name AS ProjectStatus, COALESCE(a.Name, 'NoRisk') AS RiskLevel,
 
-	   CAST(ReliabilityAssessment.Project.LastUpdateDateTimeOffset AS date) AS 'LastUpdateDate',
-	   CAST(ReliabilityAssessment.Project.CreateDateTimeOffset AS date) AS 'CreateDate',
-	   DATEDIFF(day, ReliabilityAssessment.Project.CreateDateTimeOffset,ReliabilityAssessment.Project.LastUpdateDateTimeOffset) as TimeToCompletAssessment
+	   CAST(p.LastUpdateDateTimeOffset AS date) AS LastUpdateDate,
+	   CAST(p.CreateDateTimeOffset AS date) AS CreateDate,
+	   DATEDIFF(day, p.CreateDateTimeOffset,p.LastUpdateDateTimeOffset) as TimeToCompletAssessment,
 
-FROM   ReliabilityAssessment.Project
+	   --CAST(DATEADD(MONTH, DATEDIFF(MONTH, 0, p.CreateDateTimeOffset), 0)AS date) AS YearMonth,
+       dateadd(day, -datepart(day, cast(p.CreateDateTimeOffset as date))+1, cast(p.CreateDateTimeOffset as date)) as MonthY
+	   
+FROM   ReliabilityAssessment.Project p
 
-		   INNER JOIN ReliabilityAssessment.vActiveProjectStatus
-		   ON ReliabilityAssessment.Project.StatusId = ReliabilityAssessment.vActiveProjectStatus.ProjectStatusId 
+		   INNER JOIN ReliabilityAssessment.vActiveProjectStatus vp
+		   ON p.StatusId = vp.ProjectStatusId 
 
-		   LEFT JOIN [Definition].[AssessmentRisk] 
-		   ON ([ReliabilityAssessment].[Project].[AssessmentScore] >=[Definition].[AssessmentRisk].[MinValue]
-				AND [ReliabilityAssessment].[Project].[AssessmentScore] <=[Definition].[AssessmentRisk].[MaxValue] )
-		   OR ([Definition].[AssessmentRisk].[MinValue] is null and [ReliabilityAssessment].[Project].[AssessmentScore] <= [Definition].[AssessmentRisk].[MaxValue])
-		   OR ([Definition].[AssessmentRisk].[MaxValue] is null and [ReliabilityAssessment].[Project].[AssessmentScore] >= [Definition].[AssessmentRisk].[MinValue])
+		   LEFT JOIN Definition.AssessmentRisk a
+		   ON (p.AssessmentScore >=a.MinValue
+				AND p.AssessmentScore <=a.MaxValue )
+		   OR (a.MinValue is null and p.AssessmentScore <= a.MaxValue)
+		   OR (a.MaxValue is null and p.AssessmentScore >= a.MinValue)
 
 GO
 
