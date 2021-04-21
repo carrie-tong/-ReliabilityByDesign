@@ -11,12 +11,12 @@ GO
 CREATE VIEW [ReliabilityAssessment].[vActiveProjectStatus]
 AS
 SELECT ProjectStatusId, Name
-FROM     Definition.ProjectStatus
-WHERE (Definition.ProjectStatus.Name = 'Approved') OR
-           (Definition.ProjectStatus.Name = 'Conditionally Approved') OR
-           (Definition.ProjectStatus.Name = 'Rejected') OR
-           (Definition.ProjectStatus.Name = 'Stage 1 complete') OR
-           (Definition.ProjectStatus.Name = 'Stage 2 complete')
+FROM     Definition.ProjectStatus ps
+WHERE (ps.Name = 'Approved') OR
+           (ps.Name = 'Conditionally Approved') OR
+           (ps.Name = 'Rejected') OR
+           (ps.Name = 'Stage 1 complete') OR
+           (ps.Name = 'Stage 2 complete')
 GO
 
 
