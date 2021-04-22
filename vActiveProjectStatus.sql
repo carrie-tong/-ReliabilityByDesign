@@ -7,16 +7,19 @@ GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+DROP VIEW [ReliabilityAssessment].[vActiveProjectStatus]
+GO
 
 CREATE VIEW [ReliabilityAssessment].[vActiveProjectStatus]
 AS
 SELECT ProjectStatusId, Name
 FROM     Definition.ProjectStatus ps
-WHERE (ps.Name = 'Approved') OR
-           (ps.Name = 'Conditionally Approved') OR
-           (ps.Name = 'Rejected') OR
-           (ps.Name = 'Stage 1 complete') OR
-           (ps.Name = 'Stage 2 complete')
+WHERE ps.Name in ('Approved'
+                 ,'Conditionally Approved'
+                 ,'Rejected'
+                 ,'Stage 1 complete'
+                 ,'Stage 2 complete'
+				)
 GO
 
 
