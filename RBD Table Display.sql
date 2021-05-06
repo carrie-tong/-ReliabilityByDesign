@@ -65,7 +65,7 @@ left join [ReliabilityAssessment].[vRiskStatus] a
 on b.startmonth = a.MonthY
 group by b.startmonth
 union
--- time to complete %
+-- time to complete days
 select b.startmonth, b.sortorder, 4 as KPISort, b.RiskName + + ' Time to complete AVG' as KPILabel, 
        avg(a.TimeToCompletAssessment) as ProjectCount, 
 	   avg(case when b.sortorder = 1 then 14 when b.sortorder = 2 then 8 else 6 end) as Target, 
@@ -82,4 +82,23 @@ left join [ReliabilityAssessment].[vRiskStatus] a
 on b.startmonth = a.MonthY
 and b.riskcode = a.RiskLevel
 group by b.startmonth, b.RiskName, b.SortOrder
-order by 1, 3, 2, 4, 5,6, 7
+
+union
+-- time to complete  total average days
+select b.startmonth, 1, 5 as KPISort,  'Average RBD Cycle Time' as KPILabel, 
+       avg(a.TimeToCompletAssessment) as KPIValue, 
+	   avg(9) as Target, 
+	   case when avg(a.TimeToCompletAssessment)*1.0 <= 9 then 0 else 1 end as OverTarget,
+	   max(b.DayTargetName) as TargetName
+from (
+       select dateadd(month,n.number-1,@startdate) as startmonth, dateadd(month,n.number,@startdate) as endmonth,
+              r.*
+       from dbo.vnumbers n
+       cross join [ReliabilityAssessment].[vRisk] r
+       where n.number between 1 and datediff(month,@startdate,@enddate) + 1
+       ) b
+left join [ReliabilityAssessment].[vRiskStatus] a
+on b.startmonth = a.MonthY
+and b.riskcode = a.RiskLevel
+group by b.startmonth
+order by 1, 3, 2, 4, 5,6, 7, 8

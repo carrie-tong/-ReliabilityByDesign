@@ -16,6 +16,7 @@ select 'High' as riskcode, 'High Risk' as RiskName, 1 as SortOrder, 14 as Overdu
 		union select 'Med', 'Medium Risk', 2, 8, null, CONCAT(8, ' days'), 'n/a', 'n/a'
 		union select 'low', 'Low Risk', 3, 6, null, CONCAT(6, ' days'), 'n/a', 'n/a'
 		union select 'norisk', 'No Risk', 4, 6, null, CONCAT(6, ' days'), 'n/a', 'n/a'
+		union select 'average', 'Average', 4, 6, null, CONCAT(9, ' days'), 'n/a', 'n/a'
 GO
 
 
