@@ -28,6 +28,7 @@ FROM   ReliabilityAssessment.Project p
 		   OR (a.MaxValue is null and p.AssessmentScore >= a.MinValue)
 
 GO
+--
 
 
 
