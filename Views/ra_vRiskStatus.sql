@@ -1,4 +1,4 @@
-USE ReliabilityAssessmentDb_DEV
+USE ReliabilityAssessmentDb
 GO
 
 DROP VIEW ReliabilityAssessment.vRiskStatus
@@ -7,7 +7,7 @@ GO
 CREATE VIEW ReliabilityAssessment.vRiskStatus
 AS
 SELECT p.ProjectId AS ProjectID, p.Name AS ProjectName, 
-       vp.Name AS ProjectStatus, COALESCE(a.Name, 'NoRisk') AS RiskLevel, p.RppNumber,
+       vp.Name AS ProjectStatus, COALESCE(a.Name, 'NoRisk') AS RiskLevel, p.AssessmentScore as AssessmentScore, p.RppNumber,
 
 	   CAST(p.LastUpdateDateTimeOffset AS date) AS LastUpdateDate,
 	   CAST(p.CreateDateTimeOffset AS date) AS CreateDate,
