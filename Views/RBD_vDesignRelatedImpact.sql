@@ -37,7 +37,7 @@ SELECT [mirnumber]
 		or n.ServiceName = 'Release'
 		or n.ServiceName = ' '
 		or n.ServiceName = 'Under Invesitigation'
-		-- or n.ServiceName = 'Other'
+		or n.ServiceName = 'Other'
 
 		or n.RootCause = 'Building'
 		or n.RootCause = 'Environment'
@@ -46,6 +46,6 @@ SELECT [mirnumber]
 		or n.RootCause = 'No Service Impact'
 		or n.RootCause = 'Not Yet Classified'
 		or n.RootCause = 'Service TBD'
-		-- or n.RootCause =  'No Root Cause Found'
+		or n.RootCause =  'No Root Cause Found'
 
 
