@@ -1,4 +1,4 @@
-USE [ReliabilityAssessmentDb_DEV]
+USE [ReliabilityAssessmentDb]
 GO
 
 /****** Object:  View [ReliabilityAssessment].[v_ActiveProjectStatus]    Script Date: 20/04/2021 11:23:13 AM ******/
@@ -19,6 +19,7 @@ WHERE ps.Name in ('Approved'
                  ,'Rejected'
                  ,'Stage 1 complete'
                  ,'Stage 2 complete'
+				 ,'Under Validation'
 				)
 GO
 
