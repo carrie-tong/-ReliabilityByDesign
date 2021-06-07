@@ -1,7 +1,7 @@
 select  cast(t.projectid as varchar(10)) as RppID, cast(tp.createdon as date) as CreateDate, 
         t. fdleadnetops as [NetOps Lead], t.englvlnetops as [NetOps Engagement Level], t.nextstepnetops as RPPStatus,
         t. fdleadrel as [Reliability Lead], t.englvlrel as [Reliability Engagement Level], t.nextsteprel as [Reliability RPP Status],
-        dateadd(day, -datepart(day, cast(tp.createdon as date))+1, cast(tp.createdon as date)) as Month, tp.submitter_name as Submitter
+        dateadd(day, -datepart(day, cast(tp.createdon as date))+1, cast(tp.createdon as date)) as Month, tp.submitter_name as Submitter, tp.name as RPPName
 		---t.primenetops as [NetOps Prime]
 from [dbo].[vw_tefd_projects_details] t left join [dbo].[vw_tefd_projects] tp
 on t.projectid = tp.id
