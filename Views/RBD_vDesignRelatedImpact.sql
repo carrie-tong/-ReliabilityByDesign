@@ -1,17 +1,6 @@
-USE [NuRemedy]
-GO
 
-SET ANSI_NULLS ON
-GO
 
-SET QUOTED_IDENTIFIER ON
-GO
 
---DROP VIEW RBD_vDesignRelatedImpact
---GO
-
-CREATE VIEW METRICS_MIR.RBD_vDesignRelatedImpact
-AS
 
 SELECT [mirnumber]
       ,[ServiceName]
