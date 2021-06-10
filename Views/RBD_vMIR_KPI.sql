@@ -25,4 +25,5 @@ from [NuRemedy].[METRICS_MIR].[RBD_vDesignRelatedImpact] m
 where ImpactMonthDate >= @startdate and ImpactMonthDate<=@enddate
 group by m.ImpactMonthDate
 
-order by 3,2, 1
+order by 3,2,1
+
