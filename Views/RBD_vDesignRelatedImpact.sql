@@ -3,18 +3,19 @@
 
 
 SELECT [mirnumber]
-      ,[ServiceName]
-      ,[RootCause]
+  ,[ServiceName]
+  ,[RootCause]
       ,[ImpactMonthDate]
       ,[impactcount]
       ,[FirstImpactDate]
   FROM [NuRemedy].[METRICS_MIR].[vMajorIncidentSeriveSummary] n
 
+
   EXCEPT 
 
   SELECT [mirnumber]
-      ,[ServiceName]
-      ,[RootCause]
+,[ServiceName]
+,[RootCause]
       ,[ImpactMonthDate]
       ,[impactcount]
       ,[FirstImpactDate]
