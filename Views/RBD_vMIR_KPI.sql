@@ -15,7 +15,7 @@ SELECT [mirnumber]
 ,min([FirstImpactDate]) as FirstImpactDate
   FROM [NuRemedy].[METRICS_MIR].[RBD_vDesignRelatedImpact] n
   group by n.mirnumber
---  order by mirnumber
+--order by mirnumber
   ) m
   
  -- [NuRemedy].[METRICS_MIR].[RBD_vDesignRelatedImpact] m
@@ -43,7 +43,9 @@ where ImpactMonthDate >= @startdate and ImpactMonthDate<=@enddate
 group by m.ImpactMonthDate
 
 union
-select count(distinct case when impactcount>1000 then mirnumber else null end) as KPI,
+select 
+--count(distinct mirnumber) as KPI,
+count(distinct case when impactcount>1000 then mirnumber else null end) as KPI,
 dateadd(day, -datepart(day, cast(m.ImpactMonthDate as date))+1, cast(m.ImpactMonthDate as date)) as MonthYear,
 'Total # design-related incidents with customer impact >1000' as KPIName, 5 as Target
 from 
@@ -61,6 +63,7 @@ SELECT [mirnumber]
   --[NuRemedy].[METRICS_MIR].[RBD_vDesignRelatedImpact] m
 where ImpactMonthDate >= @startdate and ImpactMonthDate<=@enddate
 group by m.ImpactMonthDate
+having sum(impactcount) > 1000
 
 order by 3,2,1
 

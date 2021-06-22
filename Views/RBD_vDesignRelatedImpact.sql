@@ -20,22 +20,22 @@ SELECT [mirnumber]
       ,[impactcount]
       ,[FirstImpactDate]
   FROM [NuRemedy].[METRICS_MIR].[vMajorIncidentSeriveSummary] n
-  WHERE n.ServiceName = 'Change' 
-        or n.ServiceName ='External Event' 
-		or n.ServiceName ='No Root Cause'
-		or n.ServiceName = 'Process'
-		or n.ServiceName = 'Release'
-		or n.ServiceName = ' '
-		or n.ServiceName = 'Under Invesitigation'
-		or n.ServiceName = 'Other'
-
-		or n.RootCause = 'Building'
-		or n.RootCause = 'Environment'
-		or n.RootCause = 'Loss Of Redundancy'
+  WHERE n.RootCause = 'Change' 
+        or n.RootCause ='External Event' 
+		or n.RootCause ='No Root Cause'
+		or n.RootCause = 'Process'
+		or n.RootCause = 'Release'
 		or n.RootCause = ' '
-		or n.RootCause = 'No Service Impact'
-		or n.RootCause = 'Not Yet Classified'
-		or n.RootCause = 'Service TBD'
-		or n.RootCause =  'No Root Cause Found'
+		or n.RootCause = 'Under Invesitigation'
+		or n.RootCause = 'Other'
+
+		or n.ServiceName = 'Building'
+		or n.ServiceName = 'Environment'
+		or n.ServiceName = 'Loss Of Redundancy'
+		or n.ServiceName = ' '
+		or n.ServiceName = 'No Service Impact'
+		or n.ServiceName = 'Not Yet Classified'
+		or n.ServiceName = 'Service TBD'
+		or n.ServiceName =  'No Root Cause Found'
 
 
